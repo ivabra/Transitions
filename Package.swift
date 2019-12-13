@@ -5,11 +5,17 @@ import PackageDescription
 
 let package = Package(
     name: "Transitions",
+    platforms: [
+        .macOS(.v10_13),
+        .iOS(.v10),
+        .tvOS(.v10),
+        .watchOS(.v2)
+    ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "Transitions",
-            targets: ["Transitions"]),
+            targets: ["Transitions"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -23,6 +29,6 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "TransitionsTests",
-            dependencies: ["Transitions"]),
+            dependencies: ["Transitions"])
     ]
 )
