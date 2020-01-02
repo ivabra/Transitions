@@ -33,6 +33,9 @@ extension URLSessionTransitionDataProvider: URLSessionTaskDelegate {
       $0.removeValue(forKey: task.taskIdentifier).map { (dataProviderTask: URLDataProviderTask) in
         dataProviderTask.result.error = error
         dataProviderTask.result.response = task.response
+        if error != nil {
+          dataProviderTask.progress.completedUnitCount = dataProviderTask.progress.totalUnitCount
+        }
         dataProviderTask.finish()
       }
      }
@@ -45,6 +48,8 @@ extension URLSessionTransitionDataProvider: URLSessionDataDelegate {
   public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
     withTaskRegister {
       $0[dataTask.taskIdentifier].map { (dataProviderTask: URLDataProviderTask) in
+        dataProviderTask.progress.totalUnitCount = max(0, dataTask.countOfBytesExpectedToReceive + dataTask.countOfBytesExpectedToSend)
+        dataProviderTask.progress.completedUnitCount = max(0, dataTask.countOfBytesSent + dataTask.countOfBytesReceived)
         if var accumulator = dataProviderTask.result.data {
           accumulator.append(data)
           dataProviderTask.result.data = accumulator
@@ -78,7 +83,7 @@ final class URLDataProviderTask: TransitionDataProviderTask {
 
   let sessionDataTask: URLSessionDataTask
 
-  var progress: Progress { sessionDataTask.progress }
+  let progress = Progress()
 
   var result: TransitionDataProviderResult = .empty
 
