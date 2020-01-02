@@ -7,7 +7,7 @@ let package = Package(
   name: "Transitions",
   platforms: [
     .macOS(.v10_13),
-    .iOS(.v11),
+    .iOS(.v10),
     .tvOS(.v10),
     .watchOS(.v2)
   ],
