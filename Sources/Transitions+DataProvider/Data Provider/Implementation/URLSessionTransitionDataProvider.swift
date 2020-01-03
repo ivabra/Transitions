@@ -8,7 +8,7 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
 
   public init(configuration: URLSessionConfiguration, operationQueue: OperationQueue) {
     self.operationQueue = operationQueue
-    self.currentSessionConfiguration = currentSessionConfiguration
+    self.currentSessionConfiguration = configuration
     super.init()
   }
 
@@ -20,9 +20,9 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
     return task
   }
 
-  public func setSessionConfiguration(_ configuration: URLSessionConfiguration, cancelPendingRequests: Bool) {
+  public func setSessionConfiguration(_ configuration: URLSessionConfiguration, cancelTasks: Bool) {
     currentSessionConfiguration = configuration
-    updateSession(cancelPendingRequests: cancelPendingRequests)
+    updateSession(cancelTasks: cancelTasks)
   }
 
   // MARK: Private
@@ -35,7 +35,7 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
 
   private var taskRegister = [Int: URLDataProviderTask]()
 
-  private lazy var session: URLSession = createSession()
+  private lazy var session: URLSession = createSession(configuration: configuration)
 
 }
 
@@ -45,9 +45,9 @@ private extension URLSessionTransitionDataProvider {
     URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
   }
 
-  func updateSession(cancelPendingRequests: Bool) {
+  func updateSession(cancelTasks: Bool) {
     let oldSession = self.session
-    if cancelPendingRequests {
+    if cancelTasks {
       oldSession.invalidateAndCancel()
     } else {
       oldSession.finishTasksAndInvalidate()
