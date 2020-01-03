@@ -2,18 +2,14 @@ import Foundation
 
 public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider {
 
-  let configuration: URLSessionConfiguration
-  var session: URLSession!
+  // MARK: Public
 
-  private let operationQueue: OperationQueue
-  private var taskRegister = [Int: URLDataProviderTask]()
-  private let taskRegisterSemaphore = DispatchSemaphore(value: 1)
+  public var configuration: URLSessionConfiguration { session.configuration }
 
   public init(configuration: URLSessionConfiguration, operationQueue: OperationQueue) {
-    self.configuration = configuration
     self.operationQueue = operationQueue
+    self.currentSessionConfiguration = currentSessionConfiguration
     super.init()
-    self.session = URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
   }
 
   public func getTransitionData(forRequest request: URLRequest) -> TransitionDataProviderTask {
@@ -22,6 +18,41 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
       $0[task.sessionDataTask.taskIdentifier] = task
     }
     return task
+  }
+
+  public func setSessionConfiguration(_ configuration: URLSessionConfiguration, cancelPendingRequests: Bool) {
+    currentSessionConfiguration = configuration
+    updateSession(cancelPendingRequests: cancelPendingRequests)
+  }
+
+  // MARK: Private
+
+  private let operationQueue: OperationQueue
+
+  private let taskRegisterSemaphore = DispatchSemaphore(value: 1)
+
+  private var currentSessionConfiguration: URLSessionConfiguration
+
+  private var taskRegister = [Int: URLDataProviderTask]()
+
+  private lazy var session: URLSession = createSession()
+
+}
+
+private extension URLSessionTransitionDataProvider {
+
+  func createSession(configuration: URLSessionConfiguration) -> URLSession {
+    URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
+  }
+
+  func updateSession(cancelPendingRequests: Bool) {
+    let oldSession = self.session
+    if cancelPendingRequests {
+      oldSession.invalidateAndCancel()
+    } else {
+      oldSession.finishTasksAndInvalidate()
+    }
+    self.session = createSession(configuration: configuration)
   }
 
 }
