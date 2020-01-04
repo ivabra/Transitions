@@ -2,6 +2,8 @@ import Foundation
 
 open class TransitionTask<TaskResult>: TransitionTaskProtocol {
 
+  public init() {}
+
   open var isCancelled: Bool {
     funcNotImplemented()
   }
