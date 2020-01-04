@@ -79,11 +79,13 @@ public final class DataProviderTransitionContextImpl: TransitionContext & Progre
   }
 
   public func encode<Content>(_ content: Content) throws -> Data where Content : Encodable {
-    try jsonEncoder.encode(content)
+    if isCancelled { throw TransitionResolutionError.cancelled }
+    return try jsonEncoder.encode(content)
   }
 
   public func decode<Content>(_ type: Content.Type, from data: Data) throws -> Content where Content : Decodable {
-    try jsonDecoder.decode(type, from: data)
+    if isCancelled { throw TransitionResolutionError.cancelled }
+    return try jsonDecoder.decode(type, from: data)
   }
 
 }
