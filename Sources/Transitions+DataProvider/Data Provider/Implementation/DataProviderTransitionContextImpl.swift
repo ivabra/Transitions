@@ -53,6 +53,9 @@ public final class DataProviderTransitionContextImpl: TransitionContext & Progre
       case .repeat(let request)?:
         progress.completedUnitCount -= task.progress.completedUnitCount
         currentRequest = request
+      case .update(let newResult)?:
+        result = newResult
+        finished = true
       case .success?, nil:
         finished = true
       }
