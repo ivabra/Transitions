@@ -1,20 +1,20 @@
 import Foundation
 
-public class TransitionTask<TaskResult>: TransitionTaskProtocol {
+open class TransitionTask<TaskResult>: TransitionTaskProtocol {
 
-  public var isCancelled: Bool {
+  open var isCancelled: Bool {
     funcNotImplemented()
   }
 
-  public func getResult() -> Result<TaskResult, Error> {
+  open func getResult() -> Result<TaskResult, Error> {
     funcNotImplemented()
   }
 
-  public func cancel() {
+  open func cancel() {
     funcNotImplemented()
   }
 
-  public var progress: Progress {
+  open var progress: Progress {
     funcNotImplemented()
   }
 
