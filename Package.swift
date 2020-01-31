@@ -18,12 +18,14 @@ let package = Package(
     targets: ["Transitions+Core",
               "Transitions+Elements",
               "Transitions+RequestBuilder",
+              "Transitions+URLStrategy",
               "Transitions+DataProvider",
               "Transitions+Task",
               "Transitions+TaskFactory",
               "Transitions+CommonUtils",
               "Transitions+HAL+Elements",
-              "Transitions+HAL+Models"]),
+              "Transitions+HAL+Models",
+              "Transitions+CommonUtils"]),
 
     .library(
       name: "Transitions+Core",
@@ -92,10 +94,6 @@ let package = Package(
     .target(
       name: "Transitions+HAL+Models", dependencies: ["Transitions+CommonUtils"]),
 
-//    .testTarget(
-//      name: "TransitionsCoreTests",
-//      dependencies: ["Transitions+Core"]),
-    
     .target(
       name: "Transitions+RequestBuilder",
       dependencies: ["Transitions+Core", "Transitions+CommonUtils"]),
