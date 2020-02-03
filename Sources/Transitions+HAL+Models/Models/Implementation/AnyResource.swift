@@ -16,3 +16,10 @@ public extension AnyResource {
 
 }
 
+public extension Resource {
+
+  static var anyResourceType: AnyResource<LinkKey>.Type {
+    return AnyResource<LinkKey>.self
+  }
+
+}
