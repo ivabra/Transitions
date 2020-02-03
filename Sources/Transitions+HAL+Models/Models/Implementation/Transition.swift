@@ -20,7 +20,7 @@ public struct Transition {
       self.href = url.absoluteString
     }
 
-    func url(with parameters: [String: Any]) throws -> URL  {
+    public func url(with parameters: [String: Any]) throws -> URL  {
       var urlString = href
       urlString.deleteHALTailParameters()
       var tailParameters = [String: Any]()
@@ -40,7 +40,7 @@ public struct Transition {
       return parametrisedUrl
     }
 
-    func url() throws -> URL {
+    public func url() throws -> URL {
       var urlString = href
       urlString.deleteHALTailParameters()
       guard let url = URL(string: urlString) else {
