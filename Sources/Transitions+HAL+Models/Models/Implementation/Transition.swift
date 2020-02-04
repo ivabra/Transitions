@@ -16,8 +16,12 @@ public struct Transition {
       case href
     }
 
+    public init(href: String) {
+      self.href = href
+    }
+
     public init(url: URL) {
-      self.href = url.absoluteString
+      self.init(href: url.absoluteString)
     }
 
     public func url(with parameters: [String: Any]) throws -> URL  {
