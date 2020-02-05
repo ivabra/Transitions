@@ -4,8 +4,6 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
 
   // MARK: Public
 
-  public var configuration: URLSessionConfiguration { session.configuration }
-
   public init(configuration: URLSessionConfiguration, operationQueue: OperationQueue) {
     self.operationQueue = operationQueue
     self.currentSessionConfiguration = configuration
@@ -35,7 +33,7 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
 
   private var taskRegister = [Int: URLDataProviderTask]()
 
-  private lazy var session: URLSession = createSession(configuration: configuration)
+  private lazy var session: URLSession = createSession(configuration: currentSessionConfiguration)
 
 }
 
@@ -52,7 +50,7 @@ private extension URLSessionTransitionDataProvider {
     } else {
       oldSession.finishTasksAndInvalidate()
     }
-    self.session = createSession(configuration: configuration)
+    self.session = createSession(configuration: currentSessionConfiguration)
   }
 
 }
