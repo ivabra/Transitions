@@ -13,6 +13,9 @@ extension BodyURLRequestModifier: URLRequestBuilder {
   public func request(for url: URL, context: TransitionContext) throws -> URLRequest {
     var request = try parentBuilder.request(for: url, context: context)
     request.httpBody = try body.requestBody(in: context)
+    if let contentType = body.contentType {
+      request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+    }
     return request
   }
 

@@ -6,6 +6,10 @@ public struct JSONURLRequestBody<Content>: URLRequestBody {
   public let object: Content
   public let options: JSONSerialization.WritingOptions
 
+  public var contentType: String? {
+    return "application/json"
+  }
+
   public init(of object: Content, options: JSONSerialization.WritingOptions) {
     self.object = object
     self.options = options
