@@ -23,6 +23,10 @@ public struct CachePolicyURLRequestModifier<Parent: URLRequestBuilder>: URLReque
 
 }
 
+public func cachePolicy(_ policy: URLRequest.CachePolicy) -> CachePolicyURLRequestModifier<JustURLRequestBuilder> {
+  .init(cachePolicy: policy, parent: .builder)
+}
+
 public extension URLRequestBuilder {
 
   func cachePolicy(_ policy: URLRequest.CachePolicy) -> CachePolicyURLRequestModifier<Self> {
