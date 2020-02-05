@@ -1,5 +1,5 @@
 import Foundation
 
 public protocol TransitionDataProviderInterceptor {
-  func investigateResult(_ result: TransitionDataProviderResult, ofRequest request: URLRequest) -> TransitionDataProviderInterceptorResult
+  func interceptResult(_ result: inout TransitionDataProviderResult, ofRequest request: URLRequest) -> TransitionDataProviderInterceptorResult
 }

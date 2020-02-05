@@ -47,21 +47,18 @@ public final class DataProviderTransitionContextImpl: TransitionContext & Progre
 
       result = task.result
 
-      switch interceptor?.investigateResult(result, ofRequest: request) {
-      case .failure(let error)?:
-        throw error
-      case .repeat(let request)?:
-        progress.completedUnitCount -= task.progress.completedUnitCount
-        currentRequest = request
-      case .update(let newResult)?:
-        result = newResult
-        finished = true
-      case .success?, nil:
-        finished = true
+      switch interceptor?.interceptResult(&result, ofRequest: request) {
+        case .pass?:
+          finished = true
+          break
+        case .repeat(let request)?:
+          progress.completedUnitCount -= task.progress.completedUnitCount
+          currentRequest = request
+        default:
+          break
       }
 
     } while !finished
-
 
     if let error = result.error {
       throw error
