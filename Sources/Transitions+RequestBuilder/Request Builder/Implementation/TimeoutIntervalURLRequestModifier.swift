@@ -21,8 +21,11 @@ public struct TimeoutIntervalURLRequestModifier<Parent: URLRequestBuilder>: URLR
 public extension URLRequestBuilder {
 
   func timeoutInterval(_ interval: TimeInterval) -> TimeoutIntervalURLRequestModifier<Self> {
-    TimeoutIntervalURLRequestModifier(parent: self, timeoutInterval: interval)
+    .init(parent: self, timeoutInterval: interval)
   }
 
 }
 
+public func timeoutInterval(_ interval: TimeInterval) -> TimeoutIntervalURLRequestModifier<JustURLRequestBuilder> {
+  .init(parent: .builder, timeoutInterval: interval)
+}

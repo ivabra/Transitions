@@ -22,3 +22,15 @@ public struct HeadersURLRequestModifier<Parent: URLRequestBuilder>: URLRequestBu
   }
 
 }
+
+public extension URLRequestBuilder {
+
+  func headers(_ headers: [String: [String]]) -> HeadersURLRequestModifier<Self> {
+    .init(parent: self, headers: headers)
+  }
+
+}
+
+public func headers(_ headers: [String: [String]]) -> HeadersURLRequestModifier<JustURLRequestBuilder> {
+  .init(parent: .builder, headers: headers)
+}

@@ -21,8 +21,11 @@ public struct HttpMethodURLRequestModifier<Parent: URLRequestBuilder>: URLReques
 public extension URLRequestBuilder {
 
   func method(_ method: HttpMethod) -> HttpMethodURLRequestModifier<Self> {
-    HttpMethodURLRequestModifier(parent: self, method: method)
+    .init(parent: self, method: method)
   }
 
 }
 
+public func method(_ method: HttpMethod) -> HttpMethodURLRequestModifier<JustURLRequestBuilder> {
+  .init(parent: .builder, method: method)
+}
