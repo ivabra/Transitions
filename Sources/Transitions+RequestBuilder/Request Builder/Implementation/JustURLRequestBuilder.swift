@@ -15,3 +15,6 @@ public struct JustURLRequestBuilder: URLRequestBuilder {
 
 }
 
+public func buildRequest<T: URLRequestBuilder>(block: (JustURLRequestBuilder) -> T) -> T {
+  block(JustURLRequestBuilder.builder)
+}
