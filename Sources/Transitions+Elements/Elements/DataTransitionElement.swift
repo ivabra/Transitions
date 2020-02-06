@@ -31,23 +31,7 @@ public extension DataTransitionElement {
   func withRequestBuilder<T: URLRequestBuilder>(_ builder: T) -> DataTransitionElement<T, ParentElement> {
     .init(requestBuilder: builder, parentElement: parentElement)
   }
-
-  func requestBody<Body: URLRequestBody>(_ body: Body) -> DataTransitionElement<BodyURLRequestModifier<Body, RequestBuilder>, ParentElement> {
-    return withRequestBuilder(requestBuilder.requestBody(body))
-  }
-
-  func appendingPathComponents(_ pathComponents: [String]) -> DataTransitionElement<AppendingPathComponentsURLRequestModifier<RequestBuilder>, ParentElement> {
-    withRequestBuilder(requestBuilder.appendingPathComponents(pathComponents))
-  }
-
-  func urlParameters(_ parameters: [String: Any]) -> DataTransitionElement<QueryURLRequestModifier<RequestBuilder>, ParentElement> {
-    return withRequestBuilder(requestBuilder.urlParameters(parameters))
-  }
-
-  func method(_ method: HttpMethod) -> DataTransitionElement<HttpMethodURLRequestModifier<RequestBuilder>, ParentElement> {
-    return withRequestBuilder(requestBuilder.method(method))
-  }
-
+  
 }
 
 

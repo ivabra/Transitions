@@ -47,24 +47,4 @@ public extension ResourceTransitionElement {
     return .init(linkKey: linkKey, parentElement: parentElement, urlStrategy: urlStrategy, requestBuilder: requestBuilder)
   }
 
-  func appendingPathComponents(_ pathComponents: [String]) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, AppendingPathComponentsURLRequestModifier<RequestBuilder>> {
-    withRequestBuilder(requestBuilder.appendingPathComponents(pathComponents))
-  }
-
-  func requestBody<Body: URLRequestBody>(_ body: Body) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, BodyURLRequestModifier<Body, RequestBuilder>> {
-    return withRequestBuilder(requestBuilder.requestBody(body))
-  }
-
-  func method(_ method: HttpMethod) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, HttpMethodURLRequestModifier<RequestBuilder>> {
-      withRequestBuilder(requestBuilder.method(method))
-  }
-
-  func timeoutInterval(_ interval: TimeInterval) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, TimeoutIntervalURLRequestModifier<RequestBuilder>> {
-    withRequestBuilder(requestBuilder.timeoutInterval(interval))
-  }
-
-  func urlParameters(_ parameters: [String: Any]) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, QueryURLRequestModifier<RequestBuilder>> {
-    return withRequestBuilder(requestBuilder.urlParameters(parameters))
-  }
-
 }
