@@ -28,8 +28,12 @@ extension DataTransitionElement: ChildTransitionElement {
 
 public extension DataTransitionElement {
 
-  func withRequestBuilder<T: URLRequestBuilder>(_ builder: T) -> DataTransitionElement<T, ParentElement> {
+  func request<T: URLRequestBuilder>(_ builder: T) -> DataTransitionElement<T, ParentElement> {
     .init(requestBuilder: builder, parentElement: parentElement)
+  }
+
+  func request<T: URLRequestBuilder>(_ builder: (RequestBuilder) -> T) -> DataTransitionElement<T, ParentElement> {
+    request(builder(self.requestBuilder))
   }
   
 }

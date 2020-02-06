@@ -36,15 +36,19 @@ extension ResourceTransitionElement: ChildTransitionElement {
 
 public extension ResourceTransitionElement {
 
-  func withUrlStrategy<T: TransitionURLStrategy>(_ strategy: T) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, T, RequestBuilder> {
+  func urlStrategy<T: TransitionURLStrategy>(_ strategy: T) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, T, RequestBuilder> {
     .init(linkKey: linkKey,
           parentElement: parentElement,
           urlStrategy: strategy,
           requestBuilder: requestBuilder)
   }
 
-  func withRequestBuilder<T: URLRequestBuilder>(_ requestBuilder: T) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, T> {
-    return .init(linkKey: linkKey, parentElement: parentElement, urlStrategy: urlStrategy, requestBuilder: requestBuilder)
+  func request<T: URLRequestBuilder>(_ requestBuilder: T) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, T> {
+    .init(linkKey: linkKey, parentElement: parentElement, urlStrategy: urlStrategy, requestBuilder: requestBuilder)
+  }
+
+  func request<T: URLRequestBuilder>(_ requestBuilder: (RequestBuilder) -> T) -> ResourceTransitionElement<LinkKey, ResourceType, ParentElement, UrlStrategy, T> {
+    request(requestBuilder(self.requestBuilder))
   }
 
 }
