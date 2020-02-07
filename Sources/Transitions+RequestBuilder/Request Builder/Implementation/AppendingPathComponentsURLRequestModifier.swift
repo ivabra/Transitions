@@ -33,3 +33,6 @@ public extension URLRequestBuilder {
 
 }
 
+public func appendingPathComponents(_ pathComponents: [String]) -> AppendingPathComponentsURLRequestModifier<JustURLRequestBuilder> {
+  JustURLRequestBuilder.builder.appendingPathComponents(pathComponents)
+}

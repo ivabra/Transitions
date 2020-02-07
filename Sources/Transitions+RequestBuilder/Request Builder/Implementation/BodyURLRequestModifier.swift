@@ -33,3 +33,7 @@ public extension URLRequestBuilder {
   }
 
 }
+
+func requestBody<Body: URLRequestBody>(_ body: Body) -> BodyURLRequestModifier<Body, JustURLRequestBuilder> {
+  .init(body: body, parentBuilder: .builder)
+}

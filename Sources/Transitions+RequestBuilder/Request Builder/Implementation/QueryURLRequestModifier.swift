@@ -22,9 +22,13 @@ public struct QueryURLRequestModifier<Parent: URLRequestBuilder>: URLRequestBuil
 public extension URLRequestBuilder {
 
   func urlParameters(_ parameters: [String: Any]) -> QueryURLRequestModifier<Self> {
-    QueryURLRequestModifier(parent: self, queryParameters: parameters)
+    .init(parent: self, queryParameters: parameters)
   }
 
+}
+
+public func urlParameters(_ parameters: [String: Any]) -> QueryURLRequestModifier<JustURLRequestBuilder> {
+  .init(parent: .builder, queryParameters: parameters)
 }
 
 

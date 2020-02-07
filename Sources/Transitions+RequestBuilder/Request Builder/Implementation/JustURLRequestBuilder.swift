@@ -15,3 +15,6 @@ public struct JustURLRequestBuilder: URLRequestBuilder {
 
 }
 
+public func requestBuilder() -> JustURLRequestBuilder {
+  .builder
+}
