@@ -6,10 +6,17 @@ public struct QueryURLRequestModifier<Parent: URLRequestBuilder>: URLRequestBuil
 
   public let parent: Parent
   public let queryParameters: [String: Any]
+  public let allowedCharacters: CharacterSet
+
+  public init(parent: Parent, queryParameters: [String: Any], allowedCharacters: CharacterSet) {
+    self.parent = parent
+    self.queryParameters = queryParameters
+    self.allowedCharacters = allowedCharacters
+  }
 
   public func request(for url: URL, context: TransitionContext) throws -> URLRequest {
     var request = try parent.request(for: url, context: context)
-    request.url = request.url?.appendingUrlParameters(queryParameters)
+    request.url = request.url?.appendingUrlParameters(queryParameters, allowedCharacters: allowedCharacters)
     return request
   }
 
@@ -21,14 +28,14 @@ public struct QueryURLRequestModifier<Parent: URLRequestBuilder>: URLRequestBuil
 
 public extension URLRequestBuilder {
 
-  func urlParameters(_ parameters: [String: Any]) -> QueryURLRequestModifier<Self> {
-    .init(parent: self, queryParameters: parameters)
+  func urlParameters(_ parameters: [String: Any], allowedCharacters: CharacterSet) -> QueryURLRequestModifier<Self> {
+    .init(parent: self, queryParameters: parameters, allowedCharacters: allowedCharacters)
   }
 
 }
 
-public func urlParameters(_ parameters: [String: Any]) -> QueryURLRequestModifier<JustURLRequestBuilder> {
-  .init(parent: .builder, queryParameters: parameters)
+public func urlParameters(_ parameters: [String: Any], allowedCharacters: CharacterSet) -> QueryURLRequestModifier<JustURLRequestBuilder> {
+  .init(parent: .builder, queryParameters: parameters, allowedCharacters: allowedCharacters)
 }
 
 

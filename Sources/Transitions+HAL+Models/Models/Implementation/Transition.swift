@@ -24,7 +24,7 @@ public struct Transition {
       self.init(href: url.absoluteString)
     }
 
-    public func url(with parameters: [String: Any]) throws -> URL  {
+    public func url(with parameters: [String: Any], allowedCharacters: CharacterSet) throws -> URL  {
       var urlString = href
       urlString.deleteHALTailParameters()
       var tailParameters = [String: Any]()
@@ -38,7 +38,7 @@ public struct Transition {
       guard let url = URL(string: urlString) else {
         throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "\(urlString) is not valid URL. Probably loss of parameters. Used parameters: \(parameters)"))
       }
-      guard let parametrisedUrl = url.appendingUrlParameters(tailParameters) else {
+      guard let parametrisedUrl = url.appendingUrlParameters(tailParameters, allowedCharacters: allowedCharacters) else {
         throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "Coudn't add parameters \(tailParameters) to url \(url)."))
       }
       return parametrisedUrl
