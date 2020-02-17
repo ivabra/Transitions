@@ -64,8 +64,8 @@ public final class DataProviderTransitionContextImpl: TransitionContext & Progre
       throw error
     }
 
-    if let data = result.data, let response = result.response {
-      return (data, response)
+    if let response = result.response {
+      return (result.data ?? Data(), response)
     } else {
       throw TransitionResolutionError.noResponse(currentRequest)
     }
