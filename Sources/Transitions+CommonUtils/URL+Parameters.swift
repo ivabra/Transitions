@@ -11,7 +11,6 @@ public extension URL {
           .map { encodedValue in "\(key)=\(encodedValue)" }
     }
     .joined(separator: "&")
-    .addingPercentEncoding(withAllowedCharacters: allowedCharacters)
     .flatMap { query -> URL? in
       let firstSeparator = self.query == nil ? "?" : "&"
       let string = absoluteString + firstSeparator + query
