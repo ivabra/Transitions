@@ -13,15 +13,15 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
     updateSession(configuration: configuration, cancelTasks: false)
   }
 
-  public func getTransitionData(forRequest request: URLRequest) -> TransitionDataProviderTask {
+  public func getTransitionData(forRequest request: URLRequest) throws -> TransitionDataProviderTask {
 
     guard let session = self.session else {
       fatalError("Session should be initialized")
     }
 
-    let dataTask = delegate.map {
+    let dataTask = try delegate.map {
       var request = request
-      $0.urlSessionTransitionDataProvider(self, willPerformRequest: &request)
+      try $0.urlSessionTransitionDataProvider(self, willPerformRequest: &request)
       return session.dataTask(with: request)
     } ?? session.dataTask(with: request)
 

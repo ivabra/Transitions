@@ -32,7 +32,7 @@ public final class DataProviderTransitionContextImpl: TransitionContext & Progre
     var result: TransitionDataProviderResult
 
     repeat {
-      let task = dataProvider.getTransitionData(forRequest: request)
+      let task = try dataProvider.getTransitionData(forRequest: request)
 
       self.currentTask = task
       progress.addChild(task.progress, withPendingUnitCount: progressPerTransition)

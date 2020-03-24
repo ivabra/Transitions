@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol TransitionDataProvider {
-  func getTransitionData(forRequest request: URLRequest) -> TransitionDataProviderTask
+  func getTransitionData(forRequest request: URLRequest) throws -> TransitionDataProviderTask
 }
 
 
