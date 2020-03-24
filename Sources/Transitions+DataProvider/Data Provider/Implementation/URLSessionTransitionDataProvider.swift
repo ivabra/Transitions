@@ -4,23 +4,38 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
 
   // MARK: Public
 
-  public init(configuration: URLSessionConfiguration, operationQueue: OperationQueue) {
+  public var delegate: URLSessionTransitionDataProviderDelegate?
+
+  public init(configuration: URLSessionConfiguration,
+              operationQueue: OperationQueue) {
     self.operationQueue = operationQueue
-    self.currentSessionConfiguration = configuration
     super.init()
+    updateSession(configuration: configuration, cancelTasks: false)
   }
 
   public func getTransitionData(forRequest request: URLRequest) -> TransitionDataProviderTask {
-    let task = URLDataProviderTask(task: session.dataTask(with: request))
+
+    guard let session = self.session else {
+      fatalError("Session should be initialized")
+    }
+
+    let dataTask = delegate.map {
+      var request = request
+      $0.urlSessionTransitionDataProvider(self, willPerformRequest: &request)
+      return session.dataTask(with: request)
+    } ?? session.dataTask(with: request)
+
+    let task = URLDataProviderTask(task: dataTask)
+
     updateTaskRegister {
       $0[task.sessionDataTask.taskIdentifier] = task
     }
+
     return task
   }
 
   public func setSessionConfiguration(_ configuration: URLSessionConfiguration, cancelTasks: Bool) {
-    currentSessionConfiguration = configuration
-    updateSession(cancelTasks: cancelTasks)
+    updateSession(configuration: configuration, cancelTasks: cancelTasks)
   }
 
   // MARK: Private
@@ -29,11 +44,9 @@ public class URLSessionTransitionDataProvider: NSObject, TransitionDataProvider 
 
   private let taskRegisterSemaphore = DispatchSemaphore(value: 1)
 
-  private var currentSessionConfiguration: URLSessionConfiguration
-
   private var taskRegister = [Int: URLDataProviderTask]()
 
-  private lazy var session: URLSession = createSession(configuration: currentSessionConfiguration)
+  private var session: URLSession?
 
 }
 
@@ -43,14 +56,15 @@ private extension URLSessionTransitionDataProvider {
     URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
   }
 
-  func updateSession(cancelTasks: Bool) {
-    let oldSession = self.session
-    if cancelTasks {
-      oldSession.invalidateAndCancel()
-    } else {
-      oldSession.finishTasksAndInvalidate()
+  func updateSession(configuration: URLSessionConfiguration, cancelTasks: Bool) {
+    if let oldSession = self.session {
+      if cancelTasks {
+        oldSession.invalidateAndCancel()
+      } else {
+        oldSession.finishTasksAndInvalidate()
+      }
     }
-    self.session = createSession(configuration: currentSessionConfiguration)
+    self.session = createSession(configuration: configuration)
   }
 
 }
