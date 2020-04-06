@@ -2,7 +2,7 @@ import Transitions_Core
 
 public struct BlockTransitionElement<ParentElement: TransitionElement, TransitionResult>: ChildTransitionElement {
 
-  typealias BlockType =  (ParentElement.TransitionResult) throws -> TransitionResult
+  public typealias BlockType =  (ParentElement.TransitionResult) throws -> TransitionResult
 
   public var estimatedNumberOfTransitions: Int { 0 }
 
@@ -18,14 +18,14 @@ public struct BlockTransitionElement<ParentElement: TransitionElement, Transitio
 
   public func transitionResult(for context: TransitionContext) throws -> TransitionResult {
     let parentResult = try parentElement.transitionResult(for: context)
-    return try block(parentElement)
+    return try block(parentResult)
   }
 
 }
 
 public extension TransitionElement {
 
-  func transitionThroughtBlock<ResultType>(_ description: String, block: BlockTransitionElement<Self, ResultType>.BlockType) -> BlockTransitionElement<Self, ResultType> {
+  func transitionThroughtBlock<ResultType>(_ description: String, block: @escaping BlockTransitionElement<Self, ResultType>.BlockType) -> BlockTransitionElement<Self, ResultType> {
     BlockTransitionElement(parent: self, description: description, block: block)
   }
 
