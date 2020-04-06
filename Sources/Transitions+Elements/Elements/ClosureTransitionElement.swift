@@ -25,7 +25,7 @@ public struct BlockTransitionElement<ParentElement: TransitionElement, Transitio
 
 public extension TransitionElement {
 
-  func transitionThroughtBlock<ResultType>(_ description: String, block: @escaping BlockTransitionElement<Self, ResultType>.BlockType) -> BlockTransitionElement<Self, ResultType> {
+  func transitionThroughBlock<ResultType>(_ description: String, block: @escaping BlockTransitionElement<Self, ResultType>.BlockType) -> BlockTransitionElement<Self, ResultType> {
     BlockTransitionElement(parent: self, description: description, block: block)
   }
 
