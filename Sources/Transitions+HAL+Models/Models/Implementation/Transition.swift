@@ -1,4 +1,5 @@
 import Foundation
+import Transitions_CommonUtils
 
 public struct Transition {
 
@@ -12,47 +13,55 @@ public struct Transition {
 
     public let href: String
 
-    private enum CodingKeys: String, CodingKey {
-      case href
-    }
-
     public init(href: String) {
       self.href = href
     }
 
-    public init(url: URL) {
-      self.init(href: url.absoluteString)
+    private enum CodingKeys: String, CodingKey {
+      case href
     }
 
-    public func url(with parameters: [String: Any], allowedCharacters: CharacterSet) throws -> URL  {
-      var urlString = href
-      urlString.deleteHALTailParameters()
-      var tailParameters = [String: Any]()
-      for (name, value) in parameters {
-        if let range = urlString.range(of: "{\(name)}") {
-          urlString.replaceSubrange(range, with: "\(value)")
-        } else {
-          tailParameters[name] = value
-        }
-      }
-      guard let url = URL(string: urlString) else {
-        throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "\(urlString) is not valid URL. Probably loss of parameters. Used parameters: \(parameters)"))
-      }
-      guard let parametrisedUrl = url.appendingUrlParameters(tailParameters, allowedCharacters: allowedCharacters) else {
-        throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "Coudn't add parameters \(tailParameters) to url \(url)."))
-      }
-      return parametrisedUrl
-    }
+  }
 
-    public func url() throws -> URL {
-      var urlString = href
-      urlString.deleteHALTailParameters()
-      guard let url = URL(string: urlString) else {
-        throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "\(urlString) is not valid URL."))
-      }
-      return url
-    }
+}
 
+public extension Transition.Link {
+
+  init(url: URL) {
+    self.init(href: url.absoluteString)
+  }
+
+  func url(with parameters: [String: String], allowedCharacters: CharacterSet) throws -> URL  {
+    return try url(with: parameters.map { ($0, $1) }, allowedCharacters: allowedCharacters)
+  }
+
+  func url<T: URLQueryParametersArrayConvertable>(with parameters: T, allowedCharacters: CharacterSet) throws -> URL  {
+    var urlString = href
+    urlString.deleteHALTailParameters()
+    var tailParameters = [(String, String)]()
+    for (name, value) in parameters.asURLQueryParametersArray() {
+      if let range = urlString.range(of: "{\(name)}") {
+        urlString.replaceSubrange(range, with: "\(value)")
+      } else {
+        tailParameters.append((name, value))
+      }
+    }
+    guard let url = URL(string: urlString) else {
+      throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "\(urlString) is not valid URL. Probably loss of parameters. Used parameters: \(parameters)"))
+    }
+    guard let parametrisedUrl = url.appendingUrlParameters(tailParameters, allowedCharacters: allowedCharacters) else {
+      throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "Coudn't add parameters \(tailParameters) to url \(url)."))
+    }
+    return parametrisedUrl
+  }
+
+  func url() throws -> URL {
+    var urlString = href
+    urlString.deleteHALTailParameters()
+    guard let url = URL(string: urlString) else {
+      throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [CodingKeys.href], debugDescription: "\(urlString) is not valid URL."))
+    }
+    return url
   }
 
 }
@@ -76,6 +85,8 @@ public extension Transition {
   init(url: URL) {
     self.links = [Link(url: url)]
   }
+
+
 
 }
 
