@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol TransitionDataProviderTask: class {
+public protocol TransitionDataProviderTask: AnyObject {
 
   var progress: Progress { get }
 

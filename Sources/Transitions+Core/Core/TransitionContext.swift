@@ -19,7 +19,7 @@ import Foundation
 //}
 
 
-public protocol ProgressObservableTransitionContext: class {
+public protocol ProgressObservableTransitionContext: AnyObject {
 
   var progressPerTransition: Int64 { get set }
 
@@ -27,7 +27,7 @@ public protocol ProgressObservableTransitionContext: class {
 
 }
 
-public protocol CancellableTransitionContext: class {
+public protocol CancellableTransitionContext: AnyObject {
 
   var isCancelled: Bool { get }
 
