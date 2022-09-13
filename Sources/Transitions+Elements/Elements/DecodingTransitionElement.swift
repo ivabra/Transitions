@@ -8,6 +8,8 @@ public struct DecodingTransitionElement<DecodingType, ParentElement> where Paren
 }
 
 extension DecodingTransitionElement: ChildTransitionElement {
+    
+  public typealias TransitionResult = DecodingType
 
   public func transitionResult(for context: TransitionContext) throws -> DecodingType {
      let data = try parentElement.transitionResult(for: context)
