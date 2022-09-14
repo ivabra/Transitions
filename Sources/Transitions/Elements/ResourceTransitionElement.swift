@@ -14,6 +14,8 @@ public struct ResourceTransitionElement<LinkKey, ResourceType: Resource, ParentE
 }
 
 extension ResourceTransitionElement: ChildTransitionElement {
+    
+  public typealias TransitionResult = Data
 
   public var estimatedNumberOfTransitions: Int {
     parentElement.estimatedNumberOfTransitions + 1

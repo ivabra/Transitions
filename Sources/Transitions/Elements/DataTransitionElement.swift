@@ -15,6 +15,8 @@ public struct DataTransitionElement<RequestBuilder, ParentElement> where Request
 }
 
 extension DataTransitionElement: ChildTransitionElement {
+    
+  public typealias TransitionResult = Data
 
   public var estimatedNumberOfTransitions: Int { 1 }
 

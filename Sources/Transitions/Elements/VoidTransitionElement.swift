@@ -12,6 +12,8 @@ public struct VoidTranisitonElement<ParentElement: TransitionElement> {
 
 
 extension VoidTranisitonElement: ChildTransitionElement {
+    
+  public typealias TransitionResult = Void
 
   public func transitionResult(for context: TransitionContext) throws -> Void {
     _ = try parentElement.transitionResult(for: context)
