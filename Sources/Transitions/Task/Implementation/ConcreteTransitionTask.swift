@@ -1,9 +1,9 @@
 import Foundation
 
 
-public final class ConcreteTransitionTask<Path, Context>: TransitionTask<Path.TransitionResult> where Path:TransitionElement, Context: TransitionContext & CancellableTransitionContext & ProgressObservableTransitionContext {
+public final class ConcreteTransitionTask<TransitionResult, Context>: TransitionTask<TransitionResult> where Context: TransitionContext & CancellableTransitionContext & ProgressObservableTransitionContext {
 
-  let path: Path
+  let path: any TransitionElement<TransitionResult>
   let context: Context
   let progressPerTransition: Int64 = 100
   let sem = DispatchSemaphore(value: 1)
@@ -18,12 +18,12 @@ public final class ConcreteTransitionTask<Path, Context>: TransitionTask<Path.Tr
     context.progress
   }
 
-  public init(path: Path, context: Context) {
+  public init(path: some TransitionElement<TransitionResult>, context: Context) {
     self.path = path
     self.context = context
   }
 
-  override public func getResult() -> Result<Path.TransitionResult, Error> {
+  override public func getResult() -> Result<TransitionResult, Error> {
     sem.wait()
     defer {
       sem.signal()

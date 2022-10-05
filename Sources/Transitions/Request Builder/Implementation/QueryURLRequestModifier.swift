@@ -8,9 +8,9 @@ public struct QueryURLRequestModifier<Parent: URLRequestBuilder>: URLRequestBuil
   public let queryParameters: [(String, String)]
   public let allowedCharacters: CharacterSet
 
-  public init<T: URLQueryParametersArrayConvertable>(parent: Parent, queryParameters: T, allowedCharacters: CharacterSet) {
+  public init(parent: Parent, queryParameters: [(String, String)], allowedCharacters: CharacterSet) {
     self.parent = parent
-    self.queryParameters = queryParameters.asURLQueryParametersArray()
+    self.queryParameters = queryParameters
     self.allowedCharacters = allowedCharacters
   }
 
@@ -28,12 +28,12 @@ public struct QueryURLRequestModifier<Parent: URLRequestBuilder>: URLRequestBuil
 
 public extension URLRequestBuilder {
 
-  func urlParameters<T: URLQueryParametersArrayConvertable>(_ parameters: T, allowedCharacters: CharacterSet) -> QueryURLRequestModifier<Self> {
+  func urlParameters(_ parameters: [(String, String)], allowedCharacters: CharacterSet) -> QueryURLRequestModifier<Self> {
     .init(parent: self, queryParameters: parameters, allowedCharacters: allowedCharacters)
   }
 
 }
 
-public func urlParameters<T: URLQueryParametersArrayConvertable>(_ parameters: T, allowedCharacters: CharacterSet) -> QueryURLRequestModifier<JustURLRequestBuilder> {
+public func urlParameters(_ parameters: [(String, String)], allowedCharacters: CharacterSet) -> QueryURLRequestModifier<JustURLRequestBuilder> {
   .init(parent: .builder, queryParameters: parameters, allowedCharacters: allowedCharacters)
 }

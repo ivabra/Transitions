@@ -21,13 +21,24 @@ open class TransitionTaskFactoryImpl: TransitionTaskFactory {
     self.jsonEncoder = encoder
   }
 
-  open func task<Element>(for path: Element) -> TransitionTask<Element.TransitionResult> where Element: TransitionElement {
+  
+  public func task<TransitionResult>(for path: any TransitionElement<TransitionResult>) -> TransitionTask<TransitionResult> {
     let context = DataProviderTransitionContextImpl(dataProvider: dataProvider,
                                         jsonDecoder: jsonDecoder,
                                         jsonEncoder: jsonEncoder,
                                         interceptor: interceptor)
-    let task = ConcreteTransitionTask(path: path, context: context)
+    
+    let task = ConcreteTransitionTask.init(path: path, context: context)
     return task
   }
+  
+//  open func task<Element>(for path: Element) -> TransitionTask<Element.TransitionResult> where Element: TransitionElement {
+//    let context = DataProviderTransitionContextImpl(dataProvider: dataProvider,
+//                                        jsonDecoder: jsonDecoder,
+//                                        jsonEncoder: jsonEncoder,
+//                                        interceptor: interceptor)
+//    let task = ConcreteTransitionTask(path: path, context: context)
+//    return task
+//  }
 
 }

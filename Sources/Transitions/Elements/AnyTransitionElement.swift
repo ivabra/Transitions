@@ -38,5 +38,5 @@ public extension TransitionElement {
   func erasingType() -> AnyTransitionElement<TransitionResult> {
     AnyTransitionElement(self)
   }
-
+    
 }

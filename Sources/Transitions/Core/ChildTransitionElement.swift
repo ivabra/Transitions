@@ -1,4 +1,4 @@
-public protocol ChildTransitionElement: TransitionElement {
+public protocol ChildTransitionElement<TransitionResult, ParentElement>: TransitionElement {
 
   associatedtype ParentElement: TransitionElement
 

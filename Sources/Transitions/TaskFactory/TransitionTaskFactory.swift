@@ -2,5 +2,5 @@
 
 
 public protocol TransitionTaskFactory {
-  func task<Element>(for path: Element) -> TransitionTask<Element.TransitionResult> where Element: TransitionElement
+  func task<TransitionResult>(for path: any TransitionElement<TransitionResult>) -> TransitionTask<TransitionResult>
 }

@@ -24,8 +24,8 @@ extension DecodingTransitionElement: ChildTransitionElement {
 
 public extension TransitionElement where TransitionResult == Data {
 
-  func decoding<T: Decodable>(_ type: T.Type) -> DecodingTransitionElement<T, Self> {
-    DecodingTransitionElement<T, Self>(parentElement: self)
+  func decoding<T: Decodable>(_ type: T.Type) -> some ChildTransitionElement<T, Self> {
+      DecodingTransitionElement<T, Self>(parentElement: self)
   }
 
 }

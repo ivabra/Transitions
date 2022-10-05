@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol TransitionElement: CustomStringConvertible {
+public protocol TransitionElement<TransitionResult>: CustomStringConvertible {
 
   associatedtype TransitionResult
 
