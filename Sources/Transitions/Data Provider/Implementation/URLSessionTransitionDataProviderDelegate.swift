@@ -1,6 +1,6 @@
 import struct Foundation.URLRequest
 
-public protocol URLSessionTransitionDataProviderDelegate: class {
+public protocol URLSessionTransitionDataProviderDelegate: AnyObject {
 
   func urlSessionTransitionDataProvider(_ provider: URLSessionTransitionDataProvider, willPerformRequest  request: inout URLRequest) throws
 
